@@ -24,7 +24,7 @@ class Setting extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        // TODO: 使之通过配置项可以修改
+        // 在 migrations 中也引用到，所以如果要改，请同时修改
         return 'bs_setting';
     }
 
@@ -56,6 +56,10 @@ class Setting extends \yii\db\ActiveRecord
             'weight' => '排序',
             'updatedAt' => '更新时间',
         ];
+    }
+
+    public function getChangeLogs(){
+        return $this->hasMany(ChangeLog::className(), ['key', 'key']);
     }
 
     public function beforeValidate(){
@@ -121,7 +125,31 @@ class Setting extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    public function afterSave($insert, $changedAttribute){
+        parent::afterSave($insert, $changedAttribute);
 
+        // 记录修改日志
+        if ($insert) {
+            $oldValue = '';
+            $newValue = $this->value;
+        }else if (isset($changedAttribute['value'])) {
+            $oldValue = $changedAttribute['value'];
+            $newValue = $this->value;
+        }else{
+            return;
+        }
+
+        $log = new ChangeLog();
+        $log->key = $this->key;
+        $log->oldValue = $oldValue;
+        $log->newValue = $newValue;
+        if (isset(Yii::$app->user->id)) {
+            $log->userId = Yii::$app->user->id;
+        }else{
+            $log->userId = 0;
+        }
+        $log->save();
+    }
 
     /**
      *

@@ -1,7 +1,7 @@
 {
-	"name": "buddysoft/setting",
+	"name": "buddysoft/yii2-setting",
 	"description": "Simple and Configurable Setting rely on DB",
-	"homepage": "https://github.com/liuwanwei/yii2-module",
+	"homepage": "https://github.com/liuwanwei/yii2-setting",
 	"license": "Apache Version 2.0",
 	"authors": [
 		{

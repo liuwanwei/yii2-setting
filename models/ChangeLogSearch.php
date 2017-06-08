@@ -41,12 +41,17 @@ class ChangeLogSearch extends ChangeLog
      */
     public function search($params)
     {
-        $query = Setting::find();
+        $query = ChangeLog::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'createdAt' => SORT_DESC,
+                ]
+            ]
         ]);
 
         $this->load($params);

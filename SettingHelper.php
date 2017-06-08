@@ -1,10 +1,10 @@
 <?php
 
-namespace buddysoft\modules\setting;
+namespace buddysoft\setting;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use buddysoft\modules\setting\models\Setting;
+use buddysoft\setting\models\Setting;
 
 class SettingHelper{
 

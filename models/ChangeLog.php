@@ -12,10 +12,10 @@ use buddysoft\setting\SettingHelper;
  * This is the model class for table "setting".
  *
  * @property integer $id
- * @property string $name
  * @property string $key
- * @property string $value
- * @property string $description
+ * @property string $oldValue
+ * @property string $newValue
+ * @property integer $userId
  */
 class ChangeLog extends \yii\db\ActiveRecord
 {
@@ -37,7 +37,6 @@ class ChangeLog extends \yii\db\ActiveRecord
             [['key', 'userId'], 'required'],
             [['userId'], 'integer'],
             [['oldValue', 'newValue'], 'string'],
-            [['name'], 'string', 'max' => 32],
             [['key'], 'string', 'max' => 64],
             [['createdAt'], 'safe'],
         ];

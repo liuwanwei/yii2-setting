@@ -50,17 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model){
                     return StringHelper::truncate($model->description, 16);
                 }
+            
             ],
-            'updatedAt',
+            [
+                'attribute' => 'updatedAt',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->updatedAt, ['change-log/index', 'settingId' => $model->id]);
+                }
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {history} {delete}',
-                'buttons' => [
-                    'history' => [
-                        return Html::a('<i class="fa fa-history" aria-hidden="true"></i>', ['change-log/index', 'settingId' => $model->id]);
-                    ],
-                ]
+                'template' => '{view} {update} {delete}',
             ],
         ],
     ]); ?>

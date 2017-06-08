@@ -2,6 +2,9 @@
 
 namespace buddysoft\setting;
 
+use Yii;
+use buddysoft\setting\models\Setting;
+
 class SettingComponent extends \yii\base\Component{
 
 	public function init(){
@@ -29,7 +32,7 @@ class SettingComponent extends \yii\base\Component{
 			]);
 		}
 
-		return $query->findOne();
+		return $query->one();
 	}
 
 	public function get($category = '', $key, $defaultValue = -1){
@@ -46,8 +49,17 @@ class SettingComponent extends \yii\base\Component{
 		if (empty($model)) {
 			return false;
 		}else{
+			if (! is_string($value)) {
+				$value = "{$value}";
+			}
 			$model->value = $value;
-			return $model->save();
+			$ret = $model->save();
+			if (!$ret) {
+				$errors = $model->getFirstErrors();
+				Yii::error(array_shift($errors));
+			}
+
+			return $ret;
 		}
 	}
 }

@@ -15,15 +15,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="setting-index">
 
-    <h3><?= Html::encode($this->title . "({$setting->key}) 修改记录") ?></h3>
+    <h3><?= Html::encode("{$setting->key} 修改记录") ?></h3>
     
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'newValue',
             'oldValue',
+            'newValue',            
             'userId',            
             'createdAt',
 

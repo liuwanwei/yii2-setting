@@ -55,7 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete}',
+                'template' => '{view} {update} {history} {delete}',
+                'buttons' => [
+                    'history' => [
+                        return Html::a('<i class="fa fa-history" aria-hidden="true"></i>', ['change-log/index', 'settingId' => $model->id]);
+                    ],
+                ]
             ],
         ],
     ]); ?>

@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
-use buddysoft\modules\setting\SettingHelper;
+use buddysoft\setting\SettingHelper;
+use buddysoft\setting\widgets\CategoryTab;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\setting\models\SettingSearch */
@@ -19,20 +20,22 @@ $this->title = $title;
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+
 <div class="setting-index">
 
     <?php if ($showTitle === true): ?>
-        <h1><?= Html::encode($this->title) ?></h1>    
-    <?php endif ?>    
-
-    <?php if ($showCreateButton === true): ?>
+        <?php if ($showCreateButton === true): ?>
         <p>
-            <?= Html::a('添加', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('添加参数', ['create'], ['class' => 'btn btn-success']) ?>
         </p>    
+        <?php endif ?>
     <?php endif ?>
-    
+
+    <?= CategoryTab::widget($categoryId) ?>    
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'layout' => '{items}{pager}{summary}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

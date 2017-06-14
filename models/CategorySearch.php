@@ -5,12 +5,11 @@ namespace buddysoft\setting\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use buddysoft\setting\SettingHelper;
 
 /**
- * SettingSearch represents the model behind the search form about `backend\modules\setting\models\Setting`.
+ * CategorySearch represents the model behind the search form about `common\models\Category`.
  */
-class SettingSearch extends Setting
+class CategorySearch extends Category
 {
     /**
      * @inheritdoc
@@ -18,8 +17,8 @@ class SettingSearch extends Setting
     public function rules()
     {
         return [
-            [['id', 'categoryId'], 'integer'],
-            [['key', 'value', 'description'], 'safe'],
+            [['id', 'weight'], 'integer'],
+            [['category', 'title', 'createdAt', 'updatedAt'], 'safe'],
         ];
     }
 
@@ -41,15 +40,15 @@ class SettingSearch extends Setting
      */
     public function search($params)
     {
-        $query = Setting::find();
+        $query = Category::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => [
-                    'weight' => SORT_ASC,
+                'defaultOrder' => [ 
+                    'weight' => SORT_DESC,
                 ]
             ]
         ]);
@@ -64,17 +63,12 @@ class SettingSearch extends Setting
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'categoryId' => $this->categoryId,
+            'createdAt' => $this->createdAt,
+            'updatedAt' => $this->updatedAt,
         ]);
 
-        $query->andFilterWhere(['like', 'value', $this->value])
-            ->andFilterWhere(['like', 'description', $this->description]);
-
-        // 如果定义了字段前缀，只搜索前缀开始的字段
-        $prefix = SettingHelper::keyPrefix();
-        if (! empty($prefix)) {
-            $query->andFilterWhere(['like', 'key', $prefix]);
-        }
+        $query->andFilterWhere(['like', 'category', $this->category])
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

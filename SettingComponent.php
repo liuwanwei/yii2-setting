@@ -3,7 +3,7 @@
 namespace buddysoft\setting;
 
 use Yii;
-use buddysoft\setting\models\Setting;
+use buddysoft\setting\models\{Setting, Category};
 
 class SettingComponent extends \yii\base\Component{
 
@@ -15,27 +15,32 @@ class SettingComponent extends \yii\base\Component{
 	 *
 	 * 查询一条数据
 	 *
-	 * @param string $category 分类可以为空，比如 '' 或 null
+	 * @param string $category 分类可以为空，比如 '' 或 null，对应 category.category
 	 * @param string $key 
 	 *
 	 * 如果分类非空，查询该分类下的数据，否则查询 category 未定义的字段
 	 */
 	
 	private function findModel($category, $key){
-		$query = Setting::find();
 		if (empty($category)) {
-			$query->where(['key' => $key])->andWhere('category IS NULL');
+			$categoryId = 0;
 		}else{
-			$query->where([
-				'category' => $category, 
-				'key' => $key
-			]);
-		}
+			$model = Category::findOne(['category' => $category]);
+			if (empty($model)) {
+				return null;
+			}else{
+				$categoryId = $model->id;
+			}
+		}		
 
-		return $query->one();
+		return Setting::find()->where([
+			'categoryId' => $categoryId, 
+			'key' => $key
+		])->one();
 	}
 
-	public function get($category = '', $key, $defaultValue = -1){
+	// 写入记录
+	public function get($key, $defaultValue = -1, $category = ''){
 		$model = $this->findModel($category, $key);
 		if (empty($model)) {
 			return $defaultValue;
@@ -44,7 +49,8 @@ class SettingComponent extends \yii\base\Component{
 		}
 	}
 
-	public function set($category = '', $key, $value){
+	// 读取记录
+	public function set($key, $value, $category = ''){
 		$model = $this->findModel($category, $key);
 		if (empty($model)) {
 			return false;

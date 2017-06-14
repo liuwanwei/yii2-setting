@@ -15,6 +15,7 @@ use buddysoft\setting\SettingHelper;
  * @property string $name
  * @property string $key
  * @property string $value
+ * @property integer $categoryId
  * @property string $description
  */
 class Setting extends \yii\db\ActiveRecord
@@ -35,9 +36,9 @@ class Setting extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'key'], 'required'],
-            [['weight'], 'integer'],
+            [['weight', 'categoryId'], 'integer'],
             [['value', 'description'], 'string'],
-            [['category', 'name'], 'string', 'max' => 32],
+            [['name'], 'string', 'max' => 32],
             [['key'], 'string', 'max' => 64],
         ];
     }
@@ -49,7 +50,7 @@ class Setting extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category' => '类别',
+            'categoryId' => '类别',
             'name' => '配置项',            
             'value' => '内容',
             'keyֵ' => '内部变量',
@@ -61,6 +62,10 @@ class Setting extends \yii\db\ActiveRecord
 
     public function getChangeLogs(){
         return $this->hasMany(ChangeLog::className(), ['key', 'key']);
+    }
+
+    public function getCategory(){
+        return $this->hasOne(Category::className(), ['id' => 'categoryId']);
     }
 
     public function beforeValidate(){

@@ -3,18 +3,15 @@
 namespace buddysoft\setting\controllers;
 
 use Yii;
-use buddysoft\setting\models\Setting;
-use buddysoft\setting\models\SettingSearch;
-use buddysoft\setting\SettingHelper;
-
-use buddysoft\widget\controllers\WebController;
+use buddysoft\setting\models\{Category,CategorySearch};
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SettingController implements the CRUD actions for Setting model.
+ * CategoryController implements the CRUD actions for Category model.
  */
-class SettingController extends WebController
+class CategoryController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,47 +28,44 @@ class SettingController extends WebController
         ];
     }
 
-    public function actionTest(){
-        $module = \Yii::$app->controller->module;
-        echo 'found';
-    }
-
     /**
-     * Lists all Setting models.
+     * Lists all Category models.
      * @return mixed
      */
     public function actionIndex()
     {
-        // 每次访问配置项列表时，都检查添加默认配置项，以防用户误删
-        SettingHelper::prepareDefaultSettings();
-
-        $searchModel = new SettingSearch();
+        $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        if (isset($searchModel->categoryId)) {
-            $categoryId = $searchModel->categoryId;
-        }else{
-            $categoryId = 0;
-        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'categoryId' => $categoryId,
         ]);
     }
 
     /**
-     * Creates a new Setting model.
-     * If creation is successful, the browser will be redirected to the 'index' page.
+     * Displays a single Category model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Category model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Setting();
+        $model = new Category();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -79,15 +73,9 @@ class SettingController extends WebController
         }
     }
 
-    public function actionView($id){
-        $model = $this->findModel($id);
-
-        return $this->render('view', ['model' => $model]);
-    }
-
     /**
-     * Updates an existing Setting model.
-     * If update is successful, the browser will be redirected to the 'index' page.
+     * Updates an existing Category model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
@@ -96,7 +84,7 @@ class SettingController extends WebController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -105,7 +93,7 @@ class SettingController extends WebController
     }
 
     /**
-     * Deletes an existing Setting model.
+     * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,15 +106,15 @@ class SettingController extends WebController
     }
 
     /**
-     * Finds the Setting model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Setting the loaded model
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Setting::findOne($id)) !== null) {
+        if (($model = Category::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

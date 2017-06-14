@@ -72,4 +72,24 @@ class CategorySearch extends Category
 
         return $dataProvider;
     }
+
+    /**
+     *
+     * 返回可供配置项使用的分类信息
+     *
+     */
+    
+    public static function categoryItems(){
+        $items = ['0' => Yii::t('bs-setting', 'Default Category')];
+
+        $models = Category::find()
+            ->orderBy(['weight' => SORT_DESC])
+            ->all();
+
+        foreach ($models as $category) {
+            $items["{$category->id}"] = $category->title;
+        }
+
+        return $items;
+    }
 }

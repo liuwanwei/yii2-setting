@@ -51,12 +51,14 @@ class Setting extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'categoryId' => '类别',
-            'name' => '配置项',            
-            'value' => '内容',
-            'keyֵ' => '内部变量',
-            'description' => '功能简介',
-            'weight' => '排序',
-            'updatedAt' => '更新时间',
+            'name' => Yii::t('bs-setting', 'Setting Name'),
+            'value' => Yii::t('bs-setting', 'Setting Value'),
+
+            'keyֵ' => Yii::t('bs-setting', 'Setting Key'),
+
+            'description' => Yii::t('bs-setting', 'Setting Description'),
+            'weight' => Yii::t('bs-setting', 'Weight'),
+            'updatedAt' => Yii::t('bs-setting', 'Updated At'),
         ];
     }
 

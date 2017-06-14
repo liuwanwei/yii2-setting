@@ -28,10 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'value:ntext',
             'description',
-            [
-                'label' => '内部变量',
-                'value' => $model->key,
-            ],            
+            'key',
             'updatedAt',
         ],
     ]) ?>

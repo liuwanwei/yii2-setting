@@ -54,7 +54,7 @@ class SettingSearch extends Setting
             ]
         ]);
 
-        $this->load($params);
+        $this->load($params, '');
 
         if (!$this->validate()) {
             $query->where('0=1');

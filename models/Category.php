@@ -45,11 +45,11 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category' => 'Category',
-            'title' => 'Title',
-            'weight' => 'Weight',
-            'createdAt' => 'Created At',
-            'updatedAt' => 'Updated At',
+            'category' => Yii::t('bs-setting', 'Category Name'),
+            'title' => Yii::t('bs-setting', 'Category Title'),
+            'weight' => Yii::t('bs-setting', 'Weight'),
+            'createdAt' => Yii::t('bs-setting', 'Created At'),
+            'updatedAt' => Yii::t('bs-setting', 'Updated At'),
         ];
     }
 }

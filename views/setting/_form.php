@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use buddysoft\setting\models\CategorySearch;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\setting\models\Setting */
@@ -17,6 +18,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'key')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'value')->textInput(['maxLength' => true]) ?>
+
+    <?= $form->field($model, 'categoryId')->dropDownList(CategorySearch::categoryItems()) ?>
 
 	<?= $form->field($model, 'weight')->textInput() ?>    
 

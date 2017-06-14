@@ -12,9 +12,25 @@ use buddysoft\setting\widgets\CategoryTab;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $setting = SettingHelper::defaultSetting();
-$title = ArrayHelper::getValue($setting, 'setting.views.index.title', '系统参数');
-$showTitle = ArrayHelper::getValue($setting, 'setting.views.index.showTitle', true);
-$showCreateButton = ArrayHelper::getValue($setting, 'setting.views.index.showCreateButton', true);
+
+// 标题可配置，默认从 messages 中获取，可灵活通过模块配置修改
+$title = ArrayHelper::getValue(
+    $setting, 
+    'setting.views.index.title', 
+    Yii::t('bs-setting', 'Settings'
+));
+
+$showTitle = ArrayHelper::getValue(
+    $setting, 
+    'setting.views.index.showTitle', 
+    true
+);
+
+$showCreateButton = ArrayHelper::getValue(
+    $setting, 
+    'setting.views.index.showCreateButton', 
+    true
+);
 
 $this->title = $title;
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,13 +40,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="setting-index">
 
     <?php if ($showTitle === true): ?>
-        <?php if ($showCreateButton === true): ?>
-        <p>
-            <?= Html::a('添加参数', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>    
-        <?php endif ?>
+    <h1><?= $this->title ?></h1>
     <?php endif ?>
 
+    <?php if ($showCreateButton === true): ?>
+    <p>
+        <?= Html::a('添加参数', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>    
+    <?php endif ?>
+
+    <!-- 显示分类 tab 栏 -->
     <?= CategoryTab::widget($categoryId) ?>    
 
     <?= GridView::widget([

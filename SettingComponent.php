@@ -23,20 +23,20 @@ class SettingComponent extends \yii\base\Component{
 	
 	private function findModel($category, $key){
 		if (empty($category)) {
-			$categoryId = 0;
+			// Category wasn't given, search the first occurrence key
+			return Setting::findOne(['key' => $key]);
 		}else{
 			$model = Category::findOne(['category' => $category]);
 			if (empty($model)) {
+				// Category was given, do strict search
 				return null;
-			}else{
-				$categoryId = $model->id;
 			}
-		}		
 
-		return Setting::find()->where([
-			'categoryId' => $categoryId, 
-			'key' => $key
-		])->one();
+			return Setting::find()->where([
+				'categoryId' => $model->id, 
+				'key' => $key
+			])->one();
+		}				
 	}
 
 	// 写入记录

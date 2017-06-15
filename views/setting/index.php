@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'value',
                 'value' => function($model){
-                    return StringHelper::truncate($model->value, 8);
+                    return StringHelper::truncate($model->value, 24);
                 }
             ],
             [

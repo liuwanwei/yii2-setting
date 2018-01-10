@@ -69,6 +69,8 @@ $bdSettings = require(__DIR__ . '/bd_settings.php');
 
 >http://localhost/setting/setting/index
 
+跟 Yii2-admin 配合使用时，记得将 setting/setting/* 访问权限添加给用户。
+
 **5.在代码中使用配置项**
 
 ```
@@ -104,3 +106,9 @@ options 有两个属性：
 
 - validator：配置项名字，诸如 integer, string, in 等
 - params: validator 验证时使用的参数，参考 validators 的 public 属性
+
+## 分类功能
+
+为了方便在后台管理所有配置项，所以给配置项增加了分类（category）属性，后台展示时，同一分类的配置项在一个 Tab 中展示。
+
+注意：配置项不会根据分类进行隔离，所有配置项都在同一名字空间中。

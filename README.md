@@ -23,7 +23,7 @@
 **1.安装**
 
 ```
-#composer require buddysoft/setting
+#composer require buddysoft/yii2-setting
 ```
 
 **2.导入数据表**

@@ -6,6 +6,7 @@ use Yii;
 use buddysoft\setting\models\Setting;
 
 class Module extends \yii\base\Module{
+	public $defaultRoute = 'setting';
 
 	public $defaultSetting;
 

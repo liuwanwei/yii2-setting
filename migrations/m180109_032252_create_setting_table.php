@@ -35,8 +35,8 @@ class m180109_032252_create_setting_table extends Migration
 	
 	    $this->createTable("bs_setting_category", [
 		    'id' => $this->primaryKey(),
-		    'category' => $this->string(64)->notNull()->comment('used in setting getter and setter'),
-		    'title' => $this->string(64)->notNull()->comment('shown in management page and setting index page'),
+		    'category' => $this->string(64)->notNull()->unique()->comment('category key'),
+		    'title' => $this->string(64)->notNull()->comment('category title'),
 		    'weight' => $this->integer()->defaultValue(0),
 		    'createdAt' => $this->datetime()->defaultExpression('CURRENT_TIMESTAMP'),
 		    'updatedAt' => $this->datetime()->defaultExpression('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'),

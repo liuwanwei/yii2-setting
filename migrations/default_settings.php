@@ -2,7 +2,16 @@
 
 /**
  *
- * 实例配置文件，通过 module 配置传入
+ * 内置参数的配置文件样例，，使用时通过 module 配置传入，一般配置在 backend/main.php 的 'modules' 配置中：
+ * 
+ * 1. 导入：
+ * $settings = require(__DIR__ . '/default_settings.php');
+ * 
+ * 2. 在 'modules' 中配置
+ * 'setting' => [
+ *   'class' => 'buddysoft\setting\Module',
+ *   'defaultSetting' => $settings,
+ * ]
  *
  */
 

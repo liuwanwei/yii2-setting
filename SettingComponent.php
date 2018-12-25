@@ -1,4 +1,13 @@
-<?php 
+<?php
+
+/**
+ * 支持通过 Yii2 #组件# 方式快捷访问配置项
+ * 1. 提供 getter 和 setter 方法
+ * 2. 支持 category 参数
+ * 3. 支持 defaultValue 参数
+ * 
+ * 建议后序应用使用这种方法访问数据。
+ */
 
 namespace buddysoft\setting;
 

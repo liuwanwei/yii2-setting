@@ -11,7 +11,7 @@ use buddysoft\setting\widgets\CategoryTab;
 /* @var $searchModel backend\modules\setting\models\SettingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$setting = SettingHelper::defaultSetting();
+$setting = SettingHelper::getDefaultSettings();
 
 // 标题可配置，默认从 messages 中获取，可灵活通过模块配置修改
 $title = ArrayHelper::getValue(

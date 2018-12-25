@@ -8,48 +8,109 @@ use buddysoft\setting\models\Setting;
 
 class SettingHelper{
 
-	public static function defaultSetting(){
-		$module = Module::getInstance();
+	/**
+	 * 查找当前运行环境中配置参数
+	 *
+	 * @return array 子模块配置项，也就是 \buddysoft\setting\Module::defaultSetting 的内容
+	 */
+	public static function getDefaultSettings(){		
+		/**
+		 * （后端）通过包含子模块的路由方式访问子模块，直接返回配置参数
+		 */
+		$moduleInstance = Module::getInstance();
+		if ($moduleInstance != null) {
+			$moduleClass = get_class($moduleInstance);
 
-		if ($module == null) {
-			
 			/**
-			 *
-			 * 在 App 运行环境中，需要通过 modules 配置
-			 * 根据 buddysoft\modules\setting\Module 名字，
-			 * 找到传入的 defaultSetting 参数
-			 *
-			 * 注意：如果项目中加载两个以上 setting 模块的话，此处只能根据名字返回第一个配置，
-			 * 所以，一般将第一个模块作为动态修改参数，可以直接引用 setting 模块来修改
-			 *
+			 * 要避免其他子模块中访问的情况。
 			 */
-			
-			$modules = Yii::$app->modules;
-			foreach ($modules as $moduleSetting) {
+			if ($moduleClass == \buddysoft\setting\Module::class) {
+				return $moduleInstance->defaultSetting;
+			}
+		}
 
-				/**
-				 *
-				 * 自定义模块的配置是数组形式，内置的是对象形式
-				 *
-				 */
+		/**
+		 * 如果不是子模块路由方式访问，就需要通过从应用的 'modules' 配置中寻找配置参数。
+		 * 
+		 * 寻找方法：逐个查找应用配置的子模块，根据配置项中的 'class' 的值是否等于 \buddysoft\setting\Module 来寻找配置项，
+		 * 然后返回配置项中的 defaultSetting 参数。
+		 */
+		
+		$modules = Yii::$app->modules;
+		foreach ($modules as $moduleName => $moduleSetting) {
+			/**
+			 * 注意：子模块的配置项是数组形式，实例化以后的才是对象形式
+			 */
 
-				if (is_array($moduleSetting)) {
-					if ($moduleSetting['class'] == Module::className()) {
+			if (is_array($moduleSetting)) {
+				if ($moduleSetting['class'] == Module::className()) {
+					if ($queryName == null) {
+						return $moduleSetting['defaultSetting'];
+					}else if ($queryName == $moduleName){
 						return $moduleSetting['defaultSetting'];
 					}
-				}				
+				}
 			}
+		}
 
-			return null;
-
-		}else{
-			// 模块运行环境，直接返回配置参数
-			return $module->defaultSetting;
-		}		
+		// 没有找到配置了 "class => \buddysoft\setting\Module" 的子模块
+		return null;
 	}
 
+	/**
+	 * 获取一个配置项的验证参数
+	 *
+	 * @param string $key 配置项键值，对应数据表字段 bs_setting.key 
+	 * @return array ( key => value)
+	 */
+	public static function getOptionsForKey(string $key){
+		$defaultSettings = static::getDefaultSettings();
+		if ($defaultSettings == null) {
+			return null;
+		}
+
+		foreach ($defaultSettings as $setting) {
+			if (!isset($setting['key']) || $setting ['key'] != $key) {
+				continue;
+			}
+
+			if (!isset($setting['options'])) {
+				// 找到的配置项中没有 options 设置
+				return null;
+			}
+
+			return $setting['options'];
+		}
+
+		return null;
+	}
+
+	/**
+	 * 从配置的 'in' 验证器的 'range' 参数中生成下拉列表
+	 *
+	 * @param array $options 某个配置项的可选参数数组
+	 * @return array 可以用在 \yii\widgets\ActiveField::dropDownList() 的 $items 参数的数组
+	 */
+	public static function getDropDownListItems(array $options){
+		if (! isset($options['params']) || !isset($options['params']['range'])) {
+			return [null => '错误的配置'];
+		}
+
+		$items = [];
+		foreach ($options['params']['range'] as $usableValue) {
+			$items[$usableValue] = $usableValue;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * 寻找配置项中定义的配置参数前缀，用于多个配置子模块
+	 *
+	 * @return void
+	 */
 	public static function keyPrefix(){
-		$setting = static::defaultSetting();
+		$setting = static::getDefaultSettings();
 		return ArrayHelper::getValue($setting, 'setting.prefix', null);
 	}
 
@@ -62,7 +123,7 @@ class SettingHelper{
 	 */
 	
 	public static function prepareDefaultSettings(){
-	    $defaultSetting = static::defaultSetting();
+	    $defaultSetting = static::getDefaultSettings();
 	    $prefix = static::keyPrefix();
 
 	    // 加载配置文件中定义的配置项信息

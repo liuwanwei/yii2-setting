@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use buddysoft\setting\models\CategorySearch;
+use buddysoft\setting\SettingHelper;
+use buddysoft\setting\models\Setting;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\setting\models\Setting */
@@ -17,7 +19,15 @@ use buddysoft\setting\models\CategorySearch;
 
     <?= $form->field($model, 'key')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'value')->textInput(['maxLength' => true]) ?>
+    <?php if (! $model->isNewRecord) {
+        $options = SettingHelper::getOptionsForKey($model->key);
+        if (isset($options['validator']) && $options['validator'] == 'in') {
+            echo $form->field($model, 'value')->dropDownList(SettingHelper::getDropDownListItems($options));
+        }else{
+            echo $form->field($model, 'value')->textInput(['maxLength' => true]);
+        }
+    }        
+    ?>
 
     <?= $form->field($model, 'categoryId')->dropDownList(CategorySearch::categoryItems()) ?>
 

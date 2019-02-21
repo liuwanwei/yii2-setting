@@ -44,11 +44,7 @@ class SettingHelper{
 
 			if (is_array($moduleSetting)) {
 				if ($moduleSetting['class'] == Module::className()) {
-					if ($queryName == null) {
-						return $moduleSetting['defaultSetting'];
-					}else if ($queryName == $moduleName){
-						return $moduleSetting['defaultSetting'];
-					}
+					return $moduleSetting['defaultSetting'];
 				}
 			}
 		}

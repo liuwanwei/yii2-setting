@@ -4,16 +4,14 @@ namespace buddysoft\setting\controllers;
 
 use Yii;
 use buddysoft\setting\models\Setting;
-use buddysoft\setting\models\ChangeLog;
 use buddysoft\setting\models\ChangeLogSearch;
-use buddysoft\widget\controllers\WebController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
  */
-class ChangeLogController extends WebController
+class ChangeLogController extends \yii\web\Controller
 {
     /**
      * @inheritdoc

@@ -6,15 +6,13 @@ use Yii;
 use buddysoft\setting\models\Setting;
 use buddysoft\setting\models\SettingSearch;
 use buddysoft\setting\SettingHelper;
-
-use buddysoft\widget\controllers\WebController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
  */
-class SettingController extends WebController
+class SettingController extends \yii\web\Controller
 {
     /**
      * @inheritdoc
